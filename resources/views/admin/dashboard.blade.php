@@ -1,4 +1,7 @@
 @extends('admin.layout.template')
+@section('pagetitle')
+    Dashboard
+@endsection
 
 @section('content')
 <section class="section">

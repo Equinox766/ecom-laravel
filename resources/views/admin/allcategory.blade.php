@@ -1,4 +1,7 @@
 @extends('admin.layout.template')
+@section('pagetitle')
+    All Category
+@endsection
 @section('content')
         <div class="card">
           <div class="card-header">

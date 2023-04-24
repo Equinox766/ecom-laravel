@@ -1,4 +1,7 @@
 @extends('admin.layout.template')
+@section('pagetitle')
+    Create Sub Category
+@endsection
 @section('content')
     <div class="row">
         <div class="col-12">
