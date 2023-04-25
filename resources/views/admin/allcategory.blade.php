@@ -7,14 +7,30 @@
           <div class="card-header">
             <h4>All Category</h4>
           </div>
-          @if (session()->has('message'))
-            <div class="alert alert-success">
-              {{session()->get('message')}}
+          @if (session()->has('message')) 
+            <div id="alert-container">
+              <div class="alert alert-success text-center">{{session()->get('message')}}</div>
             </div>
+          
+            <script>
+                setTimeout(function() {
+                    var alertContainer = document.getElementById('alert-container');
+                    var alertElement = alertContainer.querySelector('.alert');
+                    alertContainer.removeChild(alertElement);
+                  }, 5000); // Elimina la alerta después de 5 segundos
+            </script>
           @endif
+
           <div class="card-body">
             <div class="table-responsive">
               <table class="table table-bordered table-md">
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Slug</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
                 <tr>
                   @foreach ($categories as $category)
                     <tr>
@@ -28,7 +44,10 @@
                           <div class="badge badge-danger">Not Active</div>
                         @endif
                       </td> 
-                      <td><a href="#" class="btn btn-primary">Detail</a></td>
+                      <td>
+                          <a href="{{ route('admin.editcategory', $category->id) }}" class="btn btn-warning">Edit</a>
+                          <a href="{{ route('admin.deletecategory', $category->id)}}" class="btn btn-danger">Delete</a>
+                      </td>
                     </tr>
                   @endforeach
                 </tr>

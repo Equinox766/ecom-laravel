@@ -36,9 +36,15 @@ Route::middleware('auth', 'role:admin')->group(function(){
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/admin/dashboard', 'Dashboard')->name('admin.dashboard');
         Route::get('/admin/messages', 'ContactMessage')->name('admin.message');
-        Route::get('/admin/create-category', 'CreateCategory')->name('admin.createcategory');
-        Route::post('/admin/store-category', 'StoreCategory')->name('admin.storecategory');
+        
+        //Category route crud
         Route::get('/admin/all-category', 'AllCategory')->name('admin.allcategory');
+        Route::post('/admin/store-category', 'StoreCategory')->name('admin.storecategory');
+        Route::get('/admin/edit-category/{id}', 'EditCategory')->name('admin.editcategory');
+        Route::get('/admin/delete-category/{id}', 'DeleteCategory')->name('admin.deletecategory');
+        Route::get('/admin/create-category', 'CreateCategory')->name('admin.createcategory');
+        Route::post('/admin/update-category', 'UpdateCategory')->name('admin.updatecategory');
+        
         Route::get('/admin/create-sub-category', 'CreateSubcategory')->name('admin.createsubcategory');
         Route::get('/admin/all-sub-category', 'AllSubcategory')->name('admin.allsubcategory');
         Route::get('/admin/create-brands', 'CreateBrands')->name('admin.createbrands');
