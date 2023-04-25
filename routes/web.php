@@ -3,9 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,23 +30,40 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware('auth', 'role:admin')->group(function(){
+Route::middleware('role:admin', 'auth')->group(function(){
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/admin/dashboard', 'Dashboard')->name('admin.dashboard');
         Route::get('/admin/messages', 'ContactMessage')->name('admin.message');
-        
-        //Category route crud
+
+        //Category routes crud
         Route::get('/admin/all-category', 'AllCategory')->name('admin.allcategory');
         Route::post('/admin/store-category', 'StoreCategory')->name('admin.storecategory');
         Route::get('/admin/edit-category/{id}', 'EditCategory')->name('admin.editcategory');
-        Route::get('/admin/delete-category/{id}', 'DeleteCategory')->name('admin.deletecategory');
         Route::get('/admin/create-category', 'CreateCategory')->name('admin.createcategory');
         Route::post('/admin/update-category', 'UpdateCategory')->name('admin.updatecategory');
-        
+        Route::get('/admin/delete-category/{id}', 'DeleteCategory')->name('admin.deletecategory');
+        Route::post('/admin/activate-category', 'ActivateCategory')->name('admin.activatecategory');
+        Route::post('/admin/deactivate-category', 'DeactivateCategory')->name('admin.deactivatecategory');
+
+        //Sub category routes crud
         Route::get('/admin/create-sub-category', 'CreateSubcategory')->name('admin.createsubcategory');
         Route::get('/admin/all-sub-category', 'AllSubcategory')->name('admin.allsubcategory');
+        Route::post('/admin/store-sub-category', 'StoreSubcategory')->name('admin.storesubcategory');
+        Route::get('/admin/edit-sub-category/{id}', 'EditSubCategory')->name('admin.editsubcategory');
+        Route::post('/admin/update-sub-category', 'UpdateSubCategory')->name('admin.updatesubcategory');
+        Route::get('/admin/delete-sub-category/{id}', 'DeleteSubCategory')->name('admin.deletesubcategory');
+        Route::post('/admin/activate-sub-category', 'ActivateSubCategory')->name('admin.activatesubcategory');
+        Route::post('/admin/deactivate-sub-category', 'DeactivateSubCategory')->name('admin.deactivatesubcategory');
+
+        //Brand routes crud
         Route::get('/admin/create-brands', 'CreateBrands')->name('admin.createbrands');
-        Route::get('/admin/all-brands', 'AllBrands')->name('admin.allbrands');
+        Route::get('/admin/all-brand', 'AllBrand')->name('admin.allbrand');
+        Route::post('/admin/store-brands', 'StoreBrand')->name('admin.storebrand');
+        Route::get('/admin/edit-brand/{id}', 'EditBrand')->name('admin.editbrand');
+        Route::post('/admin/update-brand', 'UpdateBrand')->name('admin.updatebrand');
+        Route::get('/admin/delete-brand/{id}', 'DeleteBrand')->name('admin.deletebrand');
+        Route::post('/admin/activate-brand', 'ActivateBrand')->name('admin.activatebrand');
+        Route::post('/admin/deactivate-brand', 'DeactivateBrand')->name('admin.deactivatebrand');
     });
 
     Route::controller(ProductController::class)->group(function () {

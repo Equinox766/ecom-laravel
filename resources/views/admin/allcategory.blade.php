@@ -44,9 +44,22 @@
                           <div class="badge badge-danger">Not Active</div>
                         @endif
                       </td> 
-                      <td>
-                          <a href="{{ route('admin.editcategory', $category->id) }}" class="btn btn-warning">Edit</a>
-                          <a href="{{ route('admin.deletecategory', $category->id)}}" class="btn btn-danger">Delete</a>
+                      <td class=" d-flex ">
+                          <a href="{{ route('admin.editcategory', $category->id) }}" class="btn btn-warning mr-2 ">Edit</a>
+                          <a href="{{ route('admin.deletecategory', $category->id)}}" class="btn btn-light mr-2">Delete</a>
+                          @if ($category->status == 'active')
+                          <form action=" {{ route('admin.deactivatecategory') }} " method="POST">
+                            @csrf
+                            <input type="hidden" value="{{$category->id}}" name="cat_id">
+                            <input type="submit" value="Deactivate It" class="btn btn-warning">
+                          </form>
+                          @else
+                          <form action=" {{ route('admin.activatecategory') }} " method="POST">
+                            @csrf
+                            <input type="hidden" value="{{$category->id}}" name="cat_id">
+                            <input type="submit" value="Activate It" class="btn btn-success ">
+                          </form>
+                          @endif
                       </td>
                     </tr>
                   @endforeach

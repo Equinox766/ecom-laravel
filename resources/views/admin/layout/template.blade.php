@@ -15,6 +15,7 @@
   <!-- Custom style CSS -->
   <link rel="stylesheet" href="{{asset('dashboard_asset/assets/css/custom.css')}}">
   <link rel='shortcut icon' type='image/x-icon' href='{{asset('dashboard_asset/assets/img/favicon.ico')}}' />
+  @livewireStyles
 </head>
 
 <body>
@@ -205,7 +206,7 @@
               <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="trending-up"></i><span>Brands</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{ route('admin.createbrands')}}">Create Brands</a></li>
-                <li><a class="nav-link" href="{{ route('admin.allbrands')}}">All Brands</a></li>
+                <li><a class="nav-link" href="{{ route('admin.allbrand')}}">All Brands</a></li>
               </ul>
             </li>
             <li class="menu-header">Product Main Section</li>
@@ -334,6 +335,7 @@
   <script src="{{asset('dashboard_asset/assets/js/scripts.js')}}"></script>
   <!-- Custom JS File -->
   <script src="{{asset('dashboard_asset/assets/js/custom.js')}}"></script>
+  @livewireScripts
 </body>
 
 
