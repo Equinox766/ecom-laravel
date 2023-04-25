@@ -18,7 +18,7 @@
                         </ul>
                     </div>
                 @endif
-                <form action="" method="POST">
+                <form action="{{ route('admin.storeproduct') }}" method="POST">
                     @csrf
                     <div class="card-body">
                         <div class="form-group">
@@ -42,8 +42,26 @@
                             <label for="product_img">Select Product Image</label>
                             <input  type="file" class="form-control" id="product_img" name="product_img">
                         </div>
-                        
-                        <livewire:categorysubcategorydropdown />
+                        <div>
+                            <div class="form-group">
+                                <label for="product_category_id">Select Product Category</label>
+                                <select class="form-control" id="product_category_id" name="product_category_id">
+                                    <option value="" selected>Select One</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{$category->id}}">{{$category->category_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="product_subcategory_id">Select Product Sub Category</label>
+                                <select class="form-control" id="product_subcategory_id" name="product_subcategory_id">
+                                    <option value="" selected>Select One</option>
+                                    @foreach ($subcategories as $subcategory)
+                                        <option value="{{$subcategory->id}}">{{$subcategory->sub_category_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
 
                         @php
                             $brands = App\Models\Brand::get();
@@ -58,16 +76,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="product_size">Enter Product Size</label>
-                            <input type="text" class="form-control" id="product_size" name="product_size"
-                                placeholder="XL/36/None">
-                        </div>
-                        <div class="form-group">
-                            <label for="product_color">Enter Product Color</label>
-                            <input type="color" class="form-control" id="product_color" name="product_color">
-                        </div>
-
                         <div class="form-group">
                             <label for="quantity">Enter Quantity</label>
                             <input type="number" class="form-control" id="quantity" name="quantity"

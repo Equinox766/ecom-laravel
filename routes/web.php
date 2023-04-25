@@ -69,6 +69,12 @@ Route::middleware('role:admin', 'auth')->group(function(){
     Route::controller(ProductController::class)->group(function () {
         Route::get('/admin/add-product', 'AddProduct')->name('admin.addproduct');
         Route::get('/admin/all-product', 'AllProduct')->name('admin.allproduct');
+        Route::post('/admin/store-product', 'StoreProduct')->name('admin.storeproduct');
+        Route::get('/admin/edit-product/{id}', 'EditProduct')->name('admin.editproduct');
+        Route::post('/admin/update-product', 'UpdateProduct')->name('admin.updateproduct');
+        Route::get('/admin/delete-product/{id}', 'DeleteProduct')->name('admin.deleteproduct');
+        Route::post('/admin/activate-product', 'ActivateProduct')->name('admin.activateproduct');
+        Route::post('/admin/deactivate-product', 'DeactivateProduct')->name('admin.deactivateproduct');
     });
 });
 
