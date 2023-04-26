@@ -35,16 +35,16 @@ class ProductController extends Controller
            'product_long_des'       => 'required',
            'product_category_id'    => 'required',
            'product_subcategory_id' => 'required',
-           'product_brand_id'       => 'required'
+           'product_brand_id'       => 'required',
+           'product_img'            => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // $image = $request->file('product_img');
-        // if ($request->hasFile('product_img') && $request->file('product_img')->isValid()) {
-        //     $img_name = $request->file($image)->getClientOriginalExtension();
-        //     $request->product_img->move(public_path('upload'), $img_name);
-        //     $img_url = 'upload/' . $img_name;
-        //     // Resto del código para manejar el archivo
-        // } 
+
+         if ($request->hasFile('product_img') && $request->file('product_img')->isValid()) {
+             $img_name = time().'.'.$request->product_img->extension();
+             $request->product_img->move(public_path('upload'), $img_name);
+             $img_url = 'upload/' . $img_name;
+        }
 
         $brand_id = $request->product_brand_id;
         $category_id = $request->product_category_id;
@@ -59,7 +59,7 @@ class ProductController extends Controller
             'product_price'             => $request->product_price,
             'product_short_des'         => $request->product_short_des,
             'product_long_des'          => $request->product_long_des,
-            // 'product_img'               => $img_url,
+            'product_img'               => $img_url,
             'product_category_id'       => $category_id,
             'product_category_name'     => $category_name,
             'product_subcategory_id'    => $subcategory_id,
@@ -72,7 +72,7 @@ class ProductController extends Controller
 
         Category::where('id', $category_id)
             ->increment('product_count',1);
-        SubCategory::where('id', $category_id)
+        SubCategory::where('id', $subcategory_id)
             ->increment('product_count',1);
 
         return redirect()
@@ -81,40 +81,59 @@ class ProductController extends Controller
 
     }
 
-    public function EditProduct($id) 
+    public function EditProduct($id)
     {
         $product_info = Product::findOrFail($id);
         return view('admin.editproduct', compact('product_info'));
     }
 
-    public function UpdateProduct(Request $request) 
+    public function UpdateProduct(Request $request)
     {
         $request->validate([
-            'product_name' => 'required|unique:products'
+            'product_name'           => 'required|unique:products',
+            'product_price'          => 'required',
+            'quantity'               => 'required',
+            'product_short_des'      => 'required',
+            'product_long_des'       => 'required'
         ]);
 
         $id = $request->product_id;
 
         product::findOrFail($id)->update([
-            'product_name' => $request->product_name,
-            'slug' => strtolower(str_replace(' ','-',$request->product_name))
+            'product_name'         => $request->product_name,
+            'product_price'        => $request->product_price,
+            'product_short_des'    => $request->product_short_des,
+            'product_long_des'     => $request->product_long_des,
+            'quantity'             => $request->quantity,
+            'slug'                 => strtolower(str_replace(' ','-',$request->product_name))
         ]);
 
         return redirect()
             ->route('admin.allproduct')
-            ->with('message', 'product Updated Successfully');
+            ->with('message', 'Product Updated Successfully');
     }
 
-    public function DeleteProduct($id)
+    public function DeleteProduct( $id)
     {
+        $category_id = Product::where('id', $id)
+            ->value('product_category_id');
+        $subcategory_id = Product::where('id', $id)
+            ->value('product_subcategory_id');;
+
         Product::findOrFail($id)->delete();
+
+        Category::where('id', $category_id)
+            ->decrement('product_count',1);
+        SubCategory::where('id', $subcategory_id)
+            ->decrement('product_count',1);
+
 
         return redirect()
             ->route('admin.allproduct')
             ->with('message', 'Product Deleted Successfully');
     }
 
-    public function DeactivateProduct(Request $request) 
+    public function DeactivateProduct(Request $request)
     {
         $id =  $request->cat_id;
         Product::where('id', $id)->update([
@@ -126,7 +145,7 @@ class ProductController extends Controller
             ->with('message', 'Product Deactivate Successfully');
     }
 
-    public function ActivateProduct(Request $request) 
+    public function ActivateProduct(Request $request)
     {
         $id =  $request->cat_id;
         Product::where('id', $id)->update([
@@ -136,5 +155,34 @@ class ProductController extends Controller
         return redirect()
             ->route('admin.allproduct')
             ->with('message', 'Product Activate Successfully');
+    }
+
+    public function EditProductImg($id)
+    {
+        $product_info = Product::findOrFail($id);
+        return view('admin.editproductimg', compact('product_info'));
+    }
+
+    public function UpdateProductImg(Request $request)
+    {
+        $request->validate([
+            'product_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+
+        $id = $request->product_id;
+        if ($request->hasFile('product_img') && $request->file('product_img')->isValid()) {
+            $img_name = time().'.'.$request->product_img->extension();
+            $img_url = 'upload/' . $img_name;
+        }
+
+        Product::findOrFail($id)->update([
+            'product_img' => $img_url
+        ]);
+
+        $request->product_img->move(public_path('upload'), $img_name);
+
+        return redirect()
+            ->route('admin.allproduct')
+            ->with('message', 'Product Image Update Successfully');
     }
 }

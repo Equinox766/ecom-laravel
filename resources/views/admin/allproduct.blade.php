@@ -7,11 +7,11 @@
           <div class="card-header">
             <h4>All Product</h4>
           </div>
-          @if (session()->has('message')) 
+          @if (session()->has('message'))
             <div id="alert-container">
               <div class="alert alert-success text-center">{{session()->get('message')}}</div>
             </div>
-          
+
             <script>
                 setTimeout(function() {
                     var alertContainer = document.getElementById('alert-container');
@@ -22,11 +22,12 @@
           @endif
 
           <div class="card-body">
-            <div class="table-responsive">
+            <div class="table-responsive text-nowrap">
               <table class="table table-bordered table-md">
                 <tr>
                   <th>#</th>
                   <th>Product Name</th>
+                  <th>Img</th>
                   <th>Price</th>
                   <th>Status</th>
                   <th>Action</th>
@@ -36,6 +37,11 @@
                     <tr>
                       <td>{{$product->id}}</td>
                       <td>{{$product->product_name}}</td>
+                      <td>
+                          <img height="100px " src="{{asset($product->product_img)}}" alt="" />
+                          <br>
+                          <a href="{{ route('admin.editproductimg', $product->id) }}" class="btn btn-primary btn-lg">Update Image</a>
+                      </td>
                       <td>{{$product->product_price}}</td>
                       <td>
                         @if ($product->status == 'active')
@@ -43,10 +49,10 @@
                         @else
                           <div class="badge badge-danger">Not Active</div>
                         @endif
-                      </td> 
+                      </td>
                       <td class=" d-flex ">
-                          <a href="{{ route('admin.editcategory', $product->id) }}" class="btn btn-warning mr-2 ">Edit</a>
-                          <a href="{{ route('admin.deletecategory', $product->id)}}" class="btn btn-light mr-2">Delete</a>
+                          <a href="{{ route('admin.editproduct', $product->id) }}" class="btn btn-warning mr-2 ">Edit</a>
+                          <a href="{{ route('admin.deleteproduct', $product->id)}}" class="btn btn-light mr-2">Delete</a>
                           @if ($product->status == 'active')
                           <form action=" {{ route('admin.deactivateproduct') }} " method="POST">
                             @csrf

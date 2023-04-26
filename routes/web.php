@@ -75,6 +75,8 @@ Route::middleware('role:admin', 'auth')->group(function(){
         Route::get('/admin/delete-product/{id}', 'DeleteProduct')->name('admin.deleteproduct');
         Route::post('/admin/activate-product', 'ActivateProduct')->name('admin.activateproduct');
         Route::post('/admin/deactivate-product', 'DeactivateProduct')->name('admin.deactivateproduct');
+        Route::get('/admin/edit-product-img/{id}', 'EditProductImg')->name('admin.editproductimg');
+        Route::post('/admin/update-product-img', 'UpdateProductImg')->name('admin.updateproductimg');
     });
 });
 
