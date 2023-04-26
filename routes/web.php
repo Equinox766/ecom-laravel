@@ -5,6 +5,8 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ClientController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,6 +21,22 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::controller(HomeController::class)->group(function () {
+    Route::get('/', 'Index')->name('Home');
+});
+
+Route::controller(ClientController::class)->group(function () {
+   Route::get('/category/{id}/{slug}', 'CategoryPage')->name('category');
+   Route::get('/single-product', 'SingleProduct')->name('singleproduct');
+   Route::get('/add-to-cart', 'AddToCart')->name('addtocart');
+   Route::get('/checkout', 'Chekout')->name('checkout');
+   Route::get('/user-profile', 'UserProfile')->name('userprofile');
+   Route::get('/new-release','NewRelease')->name('newrelease');
+   Route::get('/todays-deal', 'TodaysDeal')->name('todaysdeal');
+   Route::get('/custom-service', 'CustomService')->name('customservice');
+});
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
