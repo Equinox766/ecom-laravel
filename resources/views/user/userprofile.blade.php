@@ -1,9 +1,6 @@
-@extends('user.layouts.template')
 
-@section('pagetitle')
-    Profile
+@extends('user.layouts.user')
+@section('profilecontent')
+    Dashboard
 @endsection
 
-@section('main-content')
-    User Profile
-@endsection

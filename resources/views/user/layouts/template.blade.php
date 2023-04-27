@@ -119,7 +119,7 @@
                     </div>
                     <div class="login_menu">
                         <ul>
-                            <li><a href="{{ route('checkout') }}">
+                            <li><a href="{{ route('addtocart') }}">
                                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                                     <span class="padding_10">Cart</span></a>
                             </li>

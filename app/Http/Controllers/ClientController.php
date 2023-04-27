@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
+use App\Models\ShippingInfo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ClientController extends Controller
 {
@@ -13,14 +17,84 @@ class ClientController extends Controller
         $products = Product::where('product_category_id', $id)->latest()->get();
         return view('user.category', compact( 'category', 'products'));
     }
-    public function SingleProduct() {
-        return view('user.singleproduct');
+    public function SingleProduct($id) {
+        $product = Product::findOrFail($id);
+        $subcat_id = Product::where('id', $id)->value('product_subcategory_id');
+        $related_products = Product::where('product_subcategory_id', $subcat_id)->latest()->get();
+        return view('user.singleproduct', compact( 'product', 'related_products'));
     }
     public function AddToCart() {
-        return view('user.addtocart');
+
+        $userid = Auth::id();
+        $cart_items = Cart::where('user_id', $userid)->get();
+        return view('user.addtocart', compact( 'cart_items'));
     }
+
+    public function AddProductToCart(Request $request) {
+
+        $product_price = $request->product_price;
+        $quantity = $request->quantity;
+        $price = $product_price * $quantity;
+
+        Cart::insert([
+           'product_id'     => $request->product_id,
+           'user_id'        => Auth::id(),
+           'quantity'       => $request->quantity,
+           'product_price'  => $price,
+        ]);
+
+        return redirect()
+            ->route('checkout')
+            ->with('message', 'Your item added to cart successfully');
+    }
+
+    public function RemoveCartItem($id)
+    {
+        Cart::findOrFail($id)->delete();
+        return redirect()
+            ->route('addtocart')
+            ->with('message', 'Your item removed from cart successfully');
+    }
+
+    public function GetShippingAddress() {
+
+        return view('user.shippingaddress');
+    }
+
+    public function AddShippingAddress(Request $request) {
+         ShippingInfo::insert([
+             'user_id' => Auth::id(),
+             'phone_number' => $request->phone_number,
+             'city_name' => $request->city_name,
+             'postal_code' => $request->postal_code
+         ]);
+
+        return redirect()
+            ->route('checkout');
+    }
+
+    public function PlaceOrder()
+    {
+        $userid = Auth::id();
+        $shipping_address = ShippingAddress::where('user_id', $userid)->first();
+        $cart_items = Cart::where('user_id', $userid)->get();
+
+        foreach ($cart_items as $item){
+            Order::insert([
+               'user_id' => $userid,
+               'shipping_phoneNumber' => $shipping_address->phone_number,
+               'shipping_city' => $shipping_address->city_name,
+               'shipping_postalcode' => $shipping_address->postal_code,
+            ]);
+        }
+
+    }
+
     public function Chekout() {
-        return view('user.checkout');
+        $userid = Auth::id();
+        $cartItems = Cart::where('user_id', $userid)->get();
+        $shipping_address = ShippingInfo::where('user_id', $userid)->first();
+        return view('user.checkout', compact('cartItems', 'shipping_address'));
     }
     public function UserProfile() {
         return view('user.userprofile');
@@ -33,6 +107,12 @@ class ClientController extends Controller
     }
     public function CustomService() {
         return view('user.customservice');
+    }
+    public function PendingOrder() {
+        return view('user.pendingorders');
+    }
+    public function History() {
+        return view('user.history');
     }
 
 }
