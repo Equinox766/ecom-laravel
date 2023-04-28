@@ -62,7 +62,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('role:admin', 'auth')->group(function(){
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/admin/dashboard', 'Dashboard')->name('admin.dashboard');
-        Route::get('/admin/messages', 'ContactMessage')->name('admin.message');
+        Route::get('/admin/pending-order', 'PendingOrder')->name('admin.pendingorder');
 
         //Category routes crud
         Route::get('/admin/all-category', 'AllCategory')->name('admin.allcategory');

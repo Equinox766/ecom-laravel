@@ -199,7 +199,7 @@
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{ route('admin.createsubcategory')}}">Create Sub Category</a></li>
                 <li><a class="nav-link" href="{{ route('admin.allsubcategory')}}">All Sub Categorys</a></li>
-                
+
               </ul>
             </li>
             <li class="dropdown">
@@ -216,7 +216,7 @@
             </li>
             <li class="menu-header">Other Section</li>
             <li class="dropdown">
-              <a href="{{ route('admin.message')}}"><i data-feather="mail"></i><span>Message</span></a>
+              <a href="{{ route('admin.pendingorder')}}"><i data-feather="mail"></i><span>Pending Orders</span></a>
             </li>
           </ul>
         </aside>

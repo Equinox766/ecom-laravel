@@ -5,8 +5,8 @@
 @endsection
 
 @section('main-content')
-
-    <h2>Final steo to place youur order</h2>
+    <br />
+    <h2>Final step to place your order</h2>
     <div class="row my-4">
         <div class="col-8">
             <div class="box_main">

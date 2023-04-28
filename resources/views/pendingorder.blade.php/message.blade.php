@@ -1,7 +1,7 @@
 @extends('admin.layout.template')
 @section('pagetitle')
-    Message
+    Pending Orders
 @endsection
 @section('content')
-    <h2>Recent Contact Messages</h2>
+    <h2>Pending Orders</h2>
 @endsection
